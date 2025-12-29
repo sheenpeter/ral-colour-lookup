@@ -30,14 +30,15 @@
         }
         input[type="text"] {
             width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
+            padding: 1rem 4rem 1rem 3rem;
             font-size: 1.2rem;
             border: 2px solid #e1e5e9;
             border-radius: 12px;
             outline: none;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
             transition: all 0.3s ease;
+            text-align: center;
         }
         input[type="text"]:focus {
             border-color: #4a90e2;
@@ -51,11 +52,35 @@
             color: #666;
             font-size: 1.2rem;
         }
+        .clear-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: none;
+            transition: all 0.2s ease;
+        }
+        .clear-btn:hover {
+            background: #ff5252;
+            transform: translateY(-50%) scale(1.1);
+        }
         .result {
             text-align: center;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.4s ease;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .result.show {
             opacity: 1;
@@ -100,9 +125,10 @@
             color: #e74c3c;
             background: #fadbd8;
             border: 1px solid #f5b7b1;
-            padding: 1rem;
-            border-radius: 8px;
+            padding: 1.5rem;
+            border-radius: 12px;
             margin-top: 1rem;
+            font-size: 1.1rem;
         }
         .examples {
             display: flex;
@@ -125,15 +151,29 @@
             color: white;
             border-color: #4a90e2;
         }
+        .instruction {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🎨 RAL Color Lookup</h1>
         
+        <div class="instruction">
+            Enter exactly 4 digits (e.g. 9005) → Clear ❌ button appears → See color instantly!
+        </div>
+        
         <div class="input-group">
             <span class="input-icon">🎨</span>
-            <input type="text" id="ralInput" placeholder="Enter RAL code (e.g. 9005)" maxlength="4">
+            <input type="text" id="ralInput" placeholder="____" maxlength="4">
+            <button class="clear-btn" id="clearBtn" title="Clear">✕</button>
         </div>
         
         <div id="result" class="result"></div>
@@ -146,7 +186,7 @@
     </div>
 
     <script>
-        // RAL Classic colors data (from previous conversation)
+        // RAL Classic colors data (complete dataset)
         const ralColors = {
             "1000": {name: "Green beige", rgb: [205,186,136]},
             "1001": {name: "Beige", rgb: [208,176,132]},
@@ -367,28 +407,22 @@
         };
 
         const input = document.getElementById('ralInput');
+        const clearBtn = document.getElementById('clearBtn');
         const result = document.getElementById('result');
 
-        input.addEventListener('input', function() {
-            const code = this.value.replace(/[^0-9]/g, '').padStart(4, '0').slice(0,4).toUpperCase();
-            this.value = code;
-            
-            if (code.length === 4) {
-                showColor(code);
-            } else {
+        function updateDisplay(code) {
+            // Hide result if not exactly 4 digits
+            if (code.length !== 4) {
                 result.classList.remove('show');
                 result.innerHTML = '';
+                clearBtn.style.display = 'none';
+                return;
             }
-        });
-
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const code = this.value.replace(/[^0-9]/g, '').padStart(4, '0').slice(0,4);
-                showColor(code);
-            }
-        });
-
-        function showColor(code) {
+            
+            // Show clear button when 4 digits entered
+            clearBtn.style.display = 'block';
+            
+            // Check if RAL code exists
             const color = ralColors[code];
             if (color) {
                 const rgbStr = `rgb(${color.rgb.join(',')})`;
@@ -400,20 +434,44 @@
                         <div class="rgb">${rgbStr}</div>
                     </div>
                 `;
-                result.classList.add('show');
             } else {
                 result.innerHTML = `
                     <div class="error">
                         ❌ RAL ${code} not found in RAL Classic collection
                     </div>
                 `;
-                result.classList.add('show');
             }
+            result.classList.add('show');
         }
+
+        // Input event - only numbers, exactly 4 digits
+        input.addEventListener('input', function() {
+            // Only allow digits
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0,4);
+            
+            updateDisplay(this.value);
+        });
+
+        // Clear button
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            result.classList.remove('show');
+            result.innerHTML = '';
+            clearBtn.style.display = 'none';
+            input.focus();
+        });
+
+        // Enter key
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.length === 4) {
+                updateDisplay(this.value);
+            }
+        });
 
         function setExample(code) {
             input.value = code;
-            input.dispatchEvent(new Event('input'));
+            updateDisplay(code);
+            input.focus();
         }
     </script>
 </body>
