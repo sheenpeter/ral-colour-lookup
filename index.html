@@ -3,159 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAL Color Lookup</title>
+    <title>🎨 RAL Color Lookup</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #fecfef, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .container {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        h1 {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            max-width: 550px;
+            width: 100%;
             text-align: center;
-            color: #333;
-            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.3);
         }
+
+        .header {
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24, #f0932b);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbow 3s ease infinite;
+            margin: 0 0 1rem 0;
+            font-weight: 700;
+        }
+
+        @keyframes rainbow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 400;
+        }
+
         .input-group {
             position: relative;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         input[type="text"] {
-            width: 100%;
-            padding: 1rem 4rem 1rem 3rem;
-            font-size: 1.2rem;
-            border: 2px solid #e1e5e9;
-            border-radius: 12px;
+            width: 140px !important;
+            height: 70px;
+            padding: 0 2.5rem;
+            font-size: 2rem;
+            font-weight: 600;
+            border: 3px solid #e1e5e9;
+            border-radius: 16px;
             outline: none;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            transition: all 0.3s ease;
             text-align: center;
+            letter-spacing: 6px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
+
         input[type="text"]:focus {
             border-color: #4a90e2;
-            box-shadow: 0 0 0 3px rgba(74,144,226,0.1);
+            box-shadow: 0 0 0 4px rgba(74,144,226,0.15), 0 15px 35px rgba(74,144,226,0.2);
+            transform: translateY(-2px);
         }
+
         .input-icon {
             position: absolute;
             left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #666;
-            font-size: 1.2rem;
+            color: #4a90e2;
+            font-size: 1.4rem;
+            z-index: 2;
         }
+
         .clear-btn {
             position: absolute;
             right: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            background: #ff6b6b;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
             color: white;
             border: none;
-            width: 2rem;
-            height: 2rem;
+            width: 2.2rem;
+            height: 2.2rem;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            font-weight: bold;
             display: none;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(255,107,107,0.4);
         }
+
         .clear-btn:hover {
-            background: #ff5252;
+            background: linear-gradient(45deg, #ff5252, #e53935);
             transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(255,82,82,0.5);
         }
+
         .result {
-            text-align: center;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.4s ease;
-            min-height: 200px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 220px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
+
         .result.show {
             opacity: 1;
             transform: translateY(0);
         }
+
         .color-box {
-            width: 200px;
-            height: 120px;
-            margin: 0 auto 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            border: 3px solid rgba(255,255,255,0.8);
-            transition: all 0.3s ease;
+            width: 220px;
+            height: 130px;
+            margin-bottom: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 4px solid rgba(255,255,255,0.9);
+            transition: all 0.4s ease;
         }
+
         .color-info {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1rem;
+            padding: 1.8rem 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(102,126,234,0.3);
         }
+
         .ral-code {
-            font-size: 2rem;
-            font-weight: bold;
-            letter-spacing: 4px;
-            margin-bottom: 0.5rem;
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: 6px;
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
+
         .name {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
             opacity: 0.95;
+            font-weight: 500;
         }
+
         .rgb {
             font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
-            background: rgba(255,255,255,0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.25);
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
             backdrop-filter: blur(10px);
+            font-weight: 600;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
         }
+
         .error {
             color: #e74c3c;
-            background: #fadbd8;
-            border: 1px solid #f5b7b1;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1rem;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #fadbd8, #f5b7b1);
+            border: 2px solid #f5b7b1;
+            padding: 2rem;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(231,76,60,0.2);
         }
+
         .examples {
             display: flex;
             gap: 1rem;
             justify-content: center;
-            margin-top: 1rem;
+            margin-top: 2rem;
             flex-wrap: wrap;
         }
+
         .example-btn {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border: 2px solid #dee2e6;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
+
+        .example-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .example-btn:hover::before {
+            left: 100%;
+        }
+
         .example-btn:hover {
-            background: #4a90e2;
+            background: linear-gradient(45deg, #4a90e2, #357abd);
             color: white;
             border-color: #4a90e2;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(74,144,226,0.3);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            input[type="text"] {
+                width: 120px !important;
+                height: 60px;
+                font-size: 1.6rem;
+            }
+            .color-box {
+                width: 180px;
+                height: 110px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎨 RAL Color Lookup</h1>
+        <div class="header">
+            <h1>🎨 RAL Color Lookup</h1>
+            <p class="subtitle">Discover 216+ RAL Classic Colors Instantly</p>
+        </div>
         
         <div class="input-group">
             <span class="input-icon">🎨</span>
@@ -173,7 +294,7 @@
     </div>
 
     <script>
-        // RAL Classic colors data (complete dataset)
+        // RAL Classic colors data (complete dataset from previous)
         const ralColors = {
             "1000": {name: "Green beige", rgb: [205,186,136]},
             "1001": {name: "Beige", rgb: [208,176,132]},
@@ -210,256 +331,4 @@
             "2002": {name: "Vermilion", rgb: [191,57,34]},
             "2003": {name: "Pastel orange", rgb: [246,120,41]},
             "2004": {name: "Pure orange", rgb: [226,83,4]},
-            "2005": {name: "Luminous orange", rgb: [255,77,8]},
-            "2007": {name: "Luminous bright orange", rgb: [255,178,0]},
-            "2008": {name: "Bright red orange", rgb: [236,107,34]},
-            "2009": {name: "Traffic orange", rgb: [222,83,8]},
-            "2010": {name: "Signal orange", rgb: [208,93,41]},
-            "2011": {name: "Deep orange", rgb: [226,110,15]},
-            "2012": {name: "Salmon orange", rgb: [213,101,78]},
-            "2013": {name: "Pearl orange", rgb: [146,62,37]},
-            "2017": {name: "RAL orange", rgb: [252,85,0]},
-            "3000": {name: "Flame red", rgb: [167,41,32]},
-            "3001": {name: "Signal red", rgb: [155,36,35]},
-            "3002": {name: "Carmine red", rgb: [155,35,33]},
-            "3003": {name: "Ruby red", rgb: [134,26,34]},
-            "3004": {name: "Purple red", rgb: [107,28,35]},
-            "3005": {name: "Wine red", rgb: [89,25,31]},
-            "3007": {name: "Black red", rgb: [62,32,34]},
-            "3009": {name: "Oxide red", rgb: [109,52,45]},
-            "3011": {name: "Brown red", rgb: [120,36,35]},
-            "3012": {name: "Beige red", rgb: [197,133,109]},
-            "3013": {name: "Tomato red", rgb: [151,46,37]},
-            "3014": {name: "Antique pink", rgb: [203,115,117]},
-            "3015": {name: "Light pink", rgb: [216,160,166]},
-            "3016": {name: "Coral red", rgb: [166,61,48]},
-            "3017": {name: "Rose", rgb: [202,85,93]},
-            "3018": {name: "Strawberry red", rgb: [198,63,74]},
-            "3020": {name: "Traffic red", rgb: [187,31,17]},
-            "3022": {name: "Salmon pink", rgb: [207,105,85]},
-            "3024": {name: "Luminous red", rgb: [255,45,33]},
-            "3026": {name: "Luminous bright red", rgb: [255,42,28]},
-            "3027": {name: "Raspberry red", rgb: [171,39,60]},
-            "3028": {name: "Pure red", rgb: [204,44,36]},
-            "3031": {name: "Orient red", rgb: [166,52,55]},
-            "3032": {name: "Pearl ruby red", rgb: [112,29,36]},
-            "3033": {name: "Pearl pink", rgb: [165,58,46]},
-            "4001": {name: "Red lilac", rgb: [129,97,131]},
-            "4002": {name: "Red violet", rgb: [141,60,75]},
-            "4003": {name: "Heather violet", rgb: [196,97,140]},
-            "4004": {name: "Claret violet", rgb: [101,30,56]},
-            "4005": {name: "Blue lilac", rgb: [118,104,154]},
-            "4006": {name: "Traffic purple", rgb: [144,51,115]},
-            "4007": {name: "Purple violet", rgb: [71,36,60]},
-            "4008": {name: "Signal violet", rgb: [132,76,130]},
-            "4009": {name: "Pastel violet", rgb: [157,134,146]},
-            "4010": {name: "Telemagenta", rgb: [187,64,119]},
-            "4011": {name: "Pearl violet", rgb: [110,99,135]},
-            "4012": {name: "Pearl blackberry", rgb: [106,107,127]},
-            "5000": {name: "Violet blue", rgb: [48,79,110]},
-            "5001": {name: "Green blue", rgb: [14,76,100]},
-            "5002": {name: "Ultramarine blue", rgb: [0,56,122]},
-            "5003": {name: "Sapphire blue", rgb: [31,56,85]},
-            "5004": {name: "Black blue", rgb: [25,30,40]},
-            "5005": {name: "Signal blue", rgb: [0,83,135]},
-            "5007": {name: "Brilliant blue", rgb: [55,107,140]},
-            "5008": {name: "Gray blue", rgb: [43,58,68]},
-            "5009": {name: "Azura blue", rgb: [33,95,120]},
-            "5010": {name: "Gentian blue", rgb: [0,79,124]},
-            "5011": {name: "Steel blue", rgb: [26,43,60]},
-            "5012": {name: "Light blue", rgb: [0,137,182]},
-            "5013": {name: "Cobalt blue", rgb: [25,49,83]},
-            "5014": {name: "Pigeon blue", rgb: [99,125,150]},
-            "5015": {name: "Sky blue", rgb: [0,124,175]},
-            "5017": {name: "Traffic blue", rgb: [0,91,140]},
-            "5018": {name: "Turquoise blue", rgb: [4,139,140]},
-            "5019": {name: "Capri blue", rgb: [0,94,131]},
-            "5020": {name: "Ocean blue", rgb: [0,65,75]},
-            "5021": {name: "Water blue", rgb: [0,117,119]},
-            "5022": {name: "Night blue", rgb: [34,45,90]},
-            "5023": {name: "Distant blue", rgb: [65,105,140]},
-            "5024": {name: "Pastel blue", rgb: [96,147,172]},
-            "5025": {name: "Pearl gentian blue", rgb: [32,105,124]},
-            "5026": {name: "Pearl night blue", rgb: [15,48,82]},
-            "6000": {name: "Patina green", rgb: [60,116,96]},
-            "6001": {name: "Emerald green", rgb: [54,103,53]},
-            "6002": {name: "Leaf green", rgb: [50,89,40]},
-            "6003": {name: "Olive green", rgb: [80,83,60]},
-            "6004": {name: "Blue green", rgb: [2,68,66]},
-            "6005": {name: "Moss green", rgb: [17,66,50]},
-            "6006": {name: "Grey olive", rgb: [60,57,46]},
-            "6007": {name: "Bottle green", rgb: [44,50,34]},
-            "6008": {name: "Brown green", rgb: [54,52,42]},
-            "6009": {name: "Fir green", rgb: [39,53,42]},
-            "6010": {name: "Grass green", rgb: [77,111,57]},
-            "6011": {name: "Reseda green", rgb: [107,124,89]},
-            "6012": {name: "Black green", rgb: [47,61,58]},
-            "6013": {name: "Reed green", rgb: [124,118,90]},
-            "6014": {name: "Yellow olive", rgb: [71,65,53]},
-            "6015": {name: "Black olive", rgb: [61,61,54]},
-            "6016": {name: "Turquoise green", rgb: [0,105,76]},
-            "6017": {name: "May green", rgb: [88,127,64]},
-            "6018": {name: "Yellow green", rgb: [96,153,59]},
-            "6019": {name: "Pastel green", rgb: [185,206,172]},
-            "6020": {name: "Chrome green", rgb: [55,66,47]},
-            "6021": {name: "Pale green", rgb: [138,153,119]},
-            "6022": {name: "Olive drab", rgb: [58,51,39]},
-            "6024": {name: "Traffic green", rgb: [0,131,81]},
-            "6025": {name: "Fern green", rgb: [94,110,59]},
-            "6026": {name: "Opal green", rgb: [0,95,78]},
-            "6027": {name: "Light green", rgb: [126,186,181]},
-            "6028": {name: "Pine green", rgb: [49,84,66]},
-            "6029": {name: "Mint green", rgb: [0,111,61]},
-            "6032": {name: "Signal green", rgb: [35,127,82]},
-            "6033": {name: "Mint turquoise", rgb: [69,135,127]},
-            "6034": {name: "Pastel turquoise", rgb: [122,173,172]},
-            "6035": {name: "Pearl green", rgb: [25,77,37]},
-            "6036": {name: "Pearl opal green", rgb: [4,87,75]},
-            "6037": {name: "Pure green", rgb: [0,139,41]},
-            "6038": {name: "Luminous green", rgb: [0,181,27]},
-            "6039": {name: "Fir green pearl", rgb: [179,196,62]},
-            "7000": {name: "Squirrel grey", rgb: [122,136,142]},
-            "7001": {name: "Silver grey", rgb: [140,151,156]},
-            "7002": {name: "Olive grey", rgb: [129,120,99]},
-            "7003": {name: "Moss grey", rgb: [121,118,105]},
-            "7004": {name: "Signal grey", rgb: [154,155,155]},
-            "7005": {name: "Mouse grey", rgb: [107,110,107]},
-            "7006": {name: "Beige grey", rgb: [118,106,94]},
-            "7008": {name: "Khaki grey", rgb: [116,95,61]},
-            "7009": {name: "Green grey", rgb: [93,96,88]},
-            "7010": {name: "Tarpaulin grey", rgb: [88,92,86]},
-            "7011": {name: "Iron grey", rgb: [82,89,93]},
-            "7012": {name: "Basalt grey", rgb: [87,93,94]},
-            "7013": {name: "Brown grey", rgb: [87,80,68]},
-            "7015": {name: "Slate grey", rgb: [79,83,88]},
-            "7016": {name: "Anthracite grey", rgb: [56,62,66]},
-            "7021": {name: "Black grey", rgb: [47,50,52]},
-            "7022": {name: "Umber grey", rgb: [76,74,68]},
-            "7023": {name: "Concrete grey", rgb: [128,128,118]},
-            "7024": {name: "Graphite grey", rgb: [69,73,78]},
-            "7026": {name: "Granite grey", rgb: [55,67,69]},
-            "7030": {name: "Stone grey", rgb: [146,142,133]},
-            "7031": {name: "Blue grey", rgb: [91,104,109]},
-            "7032": {name: "Pebble grey", rgb: [181,176,161]},
-            "7033": {name: "Cement grey", rgb: [127,130,116]},
-            "7034": {name: "Yellow grey", rgb: [146,136,111]},
-            "7035": {name: "Light grey", rgb: [197,199,196]},
-            "7036": {name: "Platinum grey", rgb: [151,147,146]},
-            "7037": {name: "Dusty grey", rgb: [122,123,122]},
-            "7038": {name: "Agate grey", rgb: [176,176,169]},
-            "7039": {name: "Quartz grey", rgb: [107,102,94]},
-            "7040": {name: "Window grey", rgb: [152,158,161]},
-            "7042": {name: "Traffic grey A", rgb: [142,146,145]},
-            "7043": {name: "Traffic grey B", rgb: [79,82,80]},
-            "7044": {name: "Silk grey", rgb: [183,179,168]},
-            "7045": {name: "Telegrey 1", rgb: [141,146,149]},
-            "7046": {name: "Telegrey 2", rgb: [126,134,138]},
-            "7047": {name: "Telegrey 4", rgb: [200,200,199]},
-            "7048": {name: "Pearl mouse grey", rgb: [129,123,115]},
-            "8000": {name: "Green brown", rgb: [137,105,63]},
-            "8001": {name: "Ochre brown", rgb: [157,98,43]},
-            "8002": {name: "Signal brown", rgb: [121,77,62]},
-            "8003": {name: "Clay brown", rgb: [126,75,39]},
-            "8004": {name: "Copper brown", rgb: [141,73,49]},
-            "8007": {name: "Fawn brown", rgb: [112,70,43]},
-            "8008": {name: "Olive brown", rgb: [114,74,37]},
-            "8011": {name: "Nut brown", rgb: [90,56,39]},
-            "8012": {name: "Red brown", rgb: [102,51,43]},
-            "8014": {name: "Sepia brown", rgb: [74,53,38]},
-            "8015": {name: "Chestnut brown", rgb: [94,47,38]},
-            "8016": {name: "Mahogany brown", rgb: [76,43,32]},
-            "8017": {name: "Chocolate brown", rgb: [68,47,41]},
-            "8019": {name: "Grey brown", rgb: [61,54,53]},
-            "8022": {name: "Black brown", rgb: [26,23,25]},
-            "8023": {name: "Orange brown", rgb: [164,87,41]},
-            "8024": {name: "Beige brown", rgb: [121,80,56]},
-            "8025": {name: "Pale brown", rgb: [117,88,71]},
-            "8028": {name: "Terra brown", rgb: [81,58,42]},
-            "8029": {name: "Pearl copper", rgb: [127,64,49]},
-            "9001": {name: "Cream", rgb: [233,224,210]},
-            "9002": {name: "Grey white", rgb: [214,213,203]},
-            "9003": {name: "Signal white", rgb: [236,236,231]},
-            "9004": {name: "Signal black", rgb: [43,43,44]},
-            "9005": {name: "Jet black", rgb: [14,14,16]},
-            "9006": {name: "White aluminium", rgb: [161,161,160]},
-            "9007": {name: "Grey aluminium", rgb: [134,133,129]},
-            "9010": {name: "Pure white", rgb: [241,237,225]},
-            "9011": {name: "Graphite black", rgb: [39,41,43]},
-            "9012": {name: "Clean room white", rgb: [248,242,225]},
-            "9016": {name: "Traffic white", rgb: [241,241,234]},
-            "9017": {name: "Traffic black", rgb: [41,41,42]},
-            "9018": {name: "Papyrus white", rgb: [200,203,196]},
-            "9022": {name: "Pearl light grey", rgb: [133,133,131]},
-            "9023": {name: "Pearl dark grey", rgb: [120,123,122]}
-        };
-
-        const input = document.getElementById('ralInput');
-        const clearBtn = document.getElementById('clearBtn');
-        const result = document.getElementById('result');
-
-        function updateDisplay(code) {
-            // Hide result if not exactly 4 digits
-            if (code.length !== 4) {
-                result.classList.remove('show');
-                result.innerHTML = '';
-                clearBtn.style.display = 'none';
-                return;
-            }
-            
-            // Show clear button when 4 digits entered
-            clearBtn.style.display = 'block';
-            
-            // Check if RAL code exists
-            const color = ralColors[code];
-            if (color) {
-                const rgbStr = `rgb(${color.rgb.join(',')})`;
-                result.innerHTML = `
-                    <div class="color-box" style="background-color: ${rgbStr};"></div>
-                    <div class="color-info">
-                        <div class="ral-code">RAL ${code}</div>
-                        <div class="name">${color.name}</div>
-                        <div class="rgb">${rgbStr}</div>
-                    </div>
-                `;
-            } else {
-                result.innerHTML = `
-                    <div class="error">
-                        ❌ RAL ${code} not found in RAL Classic collection
-                    </div>
-                `;
-            }
-            result.classList.add('show');
-        }
-
-        // Input event - only numbers, exactly 4 digits
-        input.addEventListener('input', function() {
-            // Only allow digits
-            this.value = this.value.replace(/[^0-9]/g, '').slice(0,4);
-            
-            updateDisplay(this.value);
-        });
-
-        // Clear button
-        clearBtn.addEventListener('click', function() {
-            input.value = '';
-            result.classList.remove('show');
-            result.innerHTML = '';
-            clearBtn.style.display = 'none';
-            input.focus();
-        });
-
-        // Enter key
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && this.value.length === 4) {
-                updateDisplay(this.value);
-            }
-        });
-
-        function setExample(code) {
-            input.value = code;
-            updateDisplay(code);
-            input.focus();
-        }
-    </script>
-</body>
-</html>
+            "2005": {name: "Luminous orange", rgb:
